@@ -1,3 +1,5 @@
+import os
+
 from prompt_toolkit.buffer import Buffer
 from prompt_toolkit.key_binding import KeyBindings, merge_key_bindings
 from prompt_toolkit.keys import Keys
@@ -5,6 +7,11 @@ from prompt_toolkit.layout.containers import HSplit, Window
 from prompt_toolkit.layout.controls import FormattedTextControl
 from prompt_toolkit.styles import Style
 from prompt_toolkit.widgets import TextArea
+
+from .logger import Logger
+
+v = os.getenv("PECO_PY_LOGGER")
+logger = Logger("./log.txt", v == "on")
 
 
 class ChoicesArea(object):
@@ -81,7 +88,7 @@ class ChoicesArea(object):
 
     def _get_choice_fragments(self):
         text = self.get_filter_text()
-        self.filtered_choices = [v for v in self.choices if v.find(text) >= 0]
+        self.filtered_choices = [c for c in self.choices if c.find(text) >= 0]
         self._selected_index = max(
             0, min(self._selected_index, len(self.filtered_choices) - 1)
         )
@@ -98,9 +105,6 @@ class ChoicesArea(object):
         for i, item in enumerate(self.filtered_choices):
             result.append(one_item(i, item))
             # result.append(("class:newline", "\n"))
-
-        if len(result) > 0:
-            result.pop()  # remove last newline
 
         return result
 

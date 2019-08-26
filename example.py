@@ -2,7 +2,7 @@ from peco import Peco
 
 
 def alphabets():
-    return [chr(ord("A") + i) for i in range(24)]
+    return [chr(ord("A") + i) for i in range(26)]
 
 
 dummy_choices = alphabets()
